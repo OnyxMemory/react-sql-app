@@ -1,9 +1,12 @@
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
 from data import Database
+from flask_cors import CORS
 
 app=Flask(__name__)
+CORS(app)
 api = Api(app)
+
 
 db=Database('evolveu','evolveu','Password','localhost',5432)
 
@@ -32,10 +35,18 @@ class Invoices(Resource):
         invoiceClientId=content.get('client_id')
         db.insert('invoices',('date','location','client_id'),(invoiceDate,invoiceLocation,invoiceClientId))
         return 201
+class ClientByName(Resource):
+    def get(self,client_name):
+        if client_name=='all':
+            return jsonify(db.select('client','all'))
+        else:
+            return jsonify(db.select('client',f'name~*\'{client_name}\''))
+    
 
 
 api.add_resource(ClientRsrc, '/client/<string:client_id>')
 api.add_resource(Invoices, '/inv/<string:client_name>')
+api.add_resource(ClientByName, '/clientn/<string:client_name>')
 
 if __name__ == '__main__':
     app.run(debug=True)

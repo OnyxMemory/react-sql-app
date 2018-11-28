@@ -9,6 +9,7 @@ flask = "*"
 pytest = "*"
 "psycopg2-binary" = "*"
 flask-restful = "*"
+flask-cors = "*"
 
 [dev-packages]
 pylint = "*"
