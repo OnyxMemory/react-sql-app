@@ -1,0 +1,18 @@
+.container-client {
+    background-color: darkcyan;
+    margin: 5vmin 2vmin;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px black; 
+}
+
+.container-client:hover {
+    background-color: rgb(1, 211, 211);
+}
+
+.container-client:active {
+    background-color: rgb(1, 211, 211);
+    box-shadow: 3px 3px 3px black;
+    transform: translateY(3px);
+}
+

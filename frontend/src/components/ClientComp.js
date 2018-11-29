@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Member from './ClientMemberComp';
+import './ClientComp.css'
 
 class ClientComponent extends Component {
     constructor() {
@@ -18,15 +20,18 @@ class ClientComponent extends Component {
         //.then(data=>this.setState({clientBox: data}))
     }
 
+    sendId = (id) => {
+        this.props.memberClick(id);
+    }
+
     render() {
         var ren = [];
         for(var i = 0; i<this.state.clientList.length; i++){
+            let clId = this.state.clientList[i][0];
+            let clName = this.state.clientList[i][1];
             ren.push(
                 <div>
-                    Id: {this.state.clientList[i][0]}
-                    <br/>
-                    Name: {this.state.clientList[i][1]}
-                    <br/>
+                    <Member id={clId} name={clName} onClick={()=>this.props.memberClick(clId)}/>
                 </div>
             )
         }

@@ -23,12 +23,12 @@ class ClientRsrc(Resource):
         db.insert('client','name',f'\'{name}\'')
         return 201
 class Invoices(Resource):
-    def get(self,client_name):
-        if client_name=='all':
+    def get(self,client):
+        if client=='all':
             return jsonify(db.select('invoices','all'))
         else:
-            return jsonify(db.join('client','invoices','id','client_id',f'one.name=\'{client_name}\''))
-    def post(self,client_name):
+            return jsonify(db.join('client','invoices','id','client_id',f'one.id={client}'))
+    def post(self,client):
         content=request.get_json()
         invoiceDate=content.get('date')
         invoiceLocation=content.get('location')
@@ -45,7 +45,7 @@ class ClientByName(Resource):
 
 
 api.add_resource(ClientRsrc, '/client/<string:client_id>')
-api.add_resource(Invoices, '/inv/<string:client_name>')
+api.add_resource(Invoices, '/inv/<string:client>')
 api.add_resource(ClientByName, '/clientn/<string:client_name>')
 
 if __name__ == '__main__':

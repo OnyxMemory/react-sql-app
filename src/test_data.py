@@ -41,6 +41,6 @@ class TestDatabase(unittest.TestCase):
 #         self.assertEqual('User', emp1.last)
 #         self.assertEqual(50000, emp1.pay)
 
-#     def test_fullname(self):
+#     def test_fullname(self):r
 #         emp1 = Employee('Test', 'User', 50000)
 #         self.assertEqual('Test User', emp1.fullname())
