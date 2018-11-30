@@ -21,7 +21,7 @@ class ClientRsrc(Resource):
         content=request.get_json()
         name=content.get('name')
         db.insert('client','name',f'\'{name}\'')
-        return 201
+        return 'Client Successfuly Created!'
 class Invoices(Resource):
     def get(self,client):
         if client=='all':
@@ -34,7 +34,7 @@ class Invoices(Resource):
         invoiceLocation=content.get('location')
         invoiceClientId=content.get('client_id')
         db.insert('invoices',('date','location','client_id'),(invoiceDate,invoiceLocation,invoiceClientId))
-        return 201
+        return 'Invoice Created Successfuly'
 class ClientByName(Resource):
     def get(self,client_name):
         if client_name=='all':

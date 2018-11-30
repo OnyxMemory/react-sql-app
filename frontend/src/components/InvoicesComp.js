@@ -17,22 +17,25 @@ class InvoicesComp extends Component {
 
 
     render() {
-        var ren = [];
-        for(var i = 0; i<this.state.invoices.length; i++){
-            let invId = this.state.invoices[i][2];
-            let invDate = this.state.invoices[i][3];
-            let invLocation = this.state.invoices[i][4];
-            ren.push(
-                <div>
-                    <Invoice id={invId} date={invDate} location={invLocation}/>
-                </div>
-            )
-        }
+        // var ren = [];
+        // for(var i = 0; i<this.state.invoices.length; i++){
+        //     let invId = this.state.invoices[i][2];
+        //     let invDate = this.state.invoices[i][3];
+        //     let invLocation = this.state.invoices[i][4];
+        //     ren.push(
+        //         <div>
+        //             <Invoice id={invId} date={invDate} location={invLocation}/>
+        //         </div>
+        //     )
+        // }
+
 
         return(
             <div className ='invoices'>
                 Invoices
-                {ren}
+                {this.state.invoices.map((invoice,i)=> {
+                        return <Invoice key={i} id={invoice[2]} date={invoice[3]} location={invoice[4]}/>
+                })}
             </div>
         )
     }
