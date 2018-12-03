@@ -22,6 +22,15 @@ class ClientRsrc(Resource):
         name=content.get('name')
         db.insert('client','name',f'\'{name}\'')
         return 'Client Successfuly Created!'
+    def put(self,client_id):
+        content=request.get_json()
+        name=content.get('name')
+        db.update('client','name',name,f'id={client_id}')
+        return 'Client Successfuly Updated!'
+    def delete(self,client_id):
+        db.delete('client',f'id={client_id}')
+        return 'Client Deleted!'
+
 class Invoices(Resource):
     def get(self,client):
         if client=='all':
@@ -33,7 +42,8 @@ class Invoices(Resource):
         invoiceDate=content.get('date')
         invoiceLocation=content.get('location')
         invoiceClientId=content.get('client_id')
-        db.insert('invoices',('date','location','client_id'),(invoiceDate,invoiceLocation,invoiceClientId))
+        invoiceTotal=content.get('total')
+        db.insert('invoices',('date','location','client_id','total'),(invoiceDate,invoiceLocation,invoiceClientId, invoiceTotal))
         return 'Invoice Created Successfuly'
 class ClientByName(Resource):
     def get(self,client_name):

@@ -19,18 +19,21 @@ class Database:
         return result
     def insert(self,tablename,column,params):
 
-        if not isinstance(params,tuple):
-            tple=f'({params})'  
-        else:
-            tple=params
-        if not isinstance(column,tuple):
-            clm=f'({column})'
-        else:
-            clm='('
-            for entry in column:
-                clm+=entry + ','
-            clm=clm[:-1]
-            clm+=')'
+        # if not isinstance(params,tuple):
+        #     tple=f'({params})'  
+        # else:
+        #     tple=params
+        # if not isinstance(column,tuple):
+        #     clm=f'({column})'
+        # else:
+        #     clm='('
+        #     for entry in column:
+        #         clm+=entry + ','
+        #     clm=clm[:-1]
+        #     clm+=')'
+        tple = self.tuplize(params,True)
+        clm = self.tuplize(column,False)
+
         #self.execute(f'insert into {tablename} values {tple}')
         cur = self.conn.cursor()
         cur.execute(f'insert into {tablename}{clm} values {tple}')
@@ -47,6 +50,43 @@ class Database:
         result=cur.fetchall()
         cur.close()
         return result
+    def update(self,tablename,columns,newparams,condition):
+        cur = self.conn.cursor()
+        if isinstance(columns,tuple):
+            statement =f'{columns[0]} = {newparams[0]}'
+            for i in range(1,len(columns)):
+                inpt = self.addquotes(newparams[i])
+                statement+=f', {columns[i]}={inpt}'
+        else:
+            inpt = self.addquotes(newparams)
+            statement = f'{columns}={inpt}'
+        cur.execute(f'update {tablename} set {statement} where {condition}')
+        self.conn.commit()
+        #cur.execute('update client set name = 1 where id=1')
+        cur.close()
+    @staticmethod
+    def tuplize(arg,quotes):
+        if not isinstance(arg,tuple):
+            tple=f'({arg})'  
+        elif quotes:
+            tple=arg
+        elif not quotes:
+            tple='('
+            for entry in arg:
+                tple+=entry + ','
+            tple=tple[:-1]
+            tple+=')'
+
+        return tple
+    @staticmethod
+    def addquotes(arg):
+        if isinstance(arg,str):
+            return f'\'{arg}\''
+        else:
+            return arg
+        
+    def close_con(self):
+        self.conn.close()
 
     
 

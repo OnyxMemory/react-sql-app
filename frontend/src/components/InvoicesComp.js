@@ -34,13 +34,13 @@ class InvoicesComp extends Component {
             <div className ='invoices'>
                 Invoices
                 {this.state.invoices.map((invoice,i)=> {
-                        return <Invoice key={i} id={invoice[2]} date={invoice[3]} location={invoice[4]}/>
+                        return <Invoice key={i} id={invoice[2]} date={invoice[3]} location={invoice[4]} total={invoice[6]}/>
                 })}
             </div>
         )
     }
     componentDidUpdate () {
-        if(this.props.id && this.props.id != this.id){
+        if(this.props.id && this.props.id !== this.id){
             this.id=this.props.id;
             fetch(`http://127.0.0.1:5000/inv/${this.props.id}`)
             .then(response=>response.json())

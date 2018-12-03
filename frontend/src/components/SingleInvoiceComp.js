@@ -10,6 +10,8 @@ class SingleInvoiceComponent extends Component {
                 Date: {this.props.date}
                 <br/>
                 Location : {this.props.location}
+                <br/>
+                Total : ${Number(this.props.total).toFixed(2)}
             </div>
         )
     }

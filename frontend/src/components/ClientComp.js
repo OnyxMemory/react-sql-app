@@ -6,30 +6,35 @@ class ClientComponent extends Component {
     constructor() {
         super();
         this.state = {
-            clientList: []
+            clientList: [],
         }
+        this.search = ''
     }
 
-    updateBox = (event) => {
-        console.log(event.target.value)
-        if(event.target.value){
-            fetch(`http://127.0.0.1:5000/clientn/${event.target.value}`)
+    renderClients = () => {
+        if(this.search){
+            fetch(`http://127.0.0.1:5000/clientn/${this.search}`)
             .then(response=>response.json())
             .then(data=>this.setState({clientList: data}))
         }
         //.then(data=>this.setState({clientBox: data}))
     }
 
+    updateInput = (event) => {
+        this.search=event.target.value
+        this.renderClients();
+    }
+
     render() {
 
         return (
             <div className = "ClientComp">
-                <button onClick={this.updateBox} value='all'>All Clients</button>
-                <input onChange={this.updateBox}></input>
+                <button onClick={this.updateInput} value='all'>All Clients</button>
+                <input onChange={this.updateInput}></input>
                 <br/>
                 <div className="Client Container">
                     {this.state.clientList.map((client,i)=> {
-                        return <Member key={i} id={client[0]} name={client[1]} onClick = {() => this.props.memberClick(client[0])}/>
+                        return <Member key={i} id={client[0]} name={client[1]} onClick = {() => this.props.memberClick(client[0])} renderClients = {this.renderClients}/>
                     })}
                 </div>
             </div>
