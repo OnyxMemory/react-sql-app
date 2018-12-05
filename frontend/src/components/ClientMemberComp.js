@@ -26,10 +26,9 @@ class ClientMemberComponent extends Component {
             })
             .then(response=>response.json())
             .then(data=>console.log(data))
-            //.then(this.props.renderClients()) 
+            .then(this.props.renderWait());
         }
         this.setState({displayUpdate: false});
-        //this.props.renderClients(); 
     }
     deleteClient = () => {
         fetch(`http://127.0.0.1:5000/client/${this.props.id}`, {
@@ -39,6 +38,7 @@ class ClientMemberComponent extends Component {
             })
             .then(response=>response.json())
             .then(data=>console.log(data))
+            .then(this.props.renderWait())
         this.setState({displayUpdate: false});
         }
     

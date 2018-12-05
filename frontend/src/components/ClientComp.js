@@ -16,6 +16,7 @@ class ClientComponent extends Component {
             fetch(`http://127.0.0.1:5000/clientn/${this.search}`)
             .then(response=>response.json())
             .then(data=>this.setState({clientList: data}))
+            //.then(console.log(this.state.clientList))
         }
         //.then(data=>this.setState({clientBox: data}))
     }
@@ -23,6 +24,16 @@ class ClientComponent extends Component {
     updateInput = (event) => {
         this.search=event.target.value
         this.renderClients();
+    }
+
+    renderWait = () => {
+        setTimeout(
+            ()=> {
+                this.renderClients()
+            }
+            ,
+            1
+        )
     }
 
     render() {
@@ -34,7 +45,7 @@ class ClientComponent extends Component {
                 <br/>
                 <div className="Client Container">
                     {this.state.clientList.map((client,i)=> {
-                        return <Member key={i} id={client[0]} name={client[1]} onClick = {() => this.props.memberClick(client[0])} renderClients = {this.renderClients}/>
+                        return <Member key={i} id={client[0]} name={client[1]} onClick = {() => this.props.memberClick(client[0])} renderWait = {this.renderWait}/>
                     })}
                 </div>
             </div>
