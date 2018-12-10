@@ -15,32 +15,47 @@ class ClientMemberComponent extends Component {
         this.updateState(event);
     }
 
-    postClient = () => {
+    postClient = async () => {
         if(this.state.newName){
-            fetch(`http://127.0.0.1:5000/client/${this.props.id}`, {
+            try{
+             const result = await fetch(`http://127.0.0.1:5000/client/${this.props.id}`, {
                 method: 'put',
                 headers: {'Content-type': 'application/json'},
                 body: JSON.stringify({
                     name: this.state.newName
                 })       
             })
-            .then(response=>response.json())
-            .then(data=>console.log(data))
-            .then(this.props.renderWait());
+            const data = await result.json();
+            console.log(data);
+            this.props.renderWait();
+            // .then(response=>response.json())
+            // .then(data=>console.log(data))
+            // .then(this.props.renderWait());    
+            } catch(error) {
+                console.log(error);
+            }
         }
         this.setState({displayUpdate: false});
     }
-    deleteClient = () => {
-        fetch(`http://127.0.0.1:5000/client/${this.props.id}`, {
-                method: 'delete',
-                headers: {'Content-type': 'application/json'},
+    deleteClient = async () => {
+        try{
+            const result = await fetch(`http://127.0.0.1:5000/client/${this.props.id}`, {
+                    method: 'delete',
+                    headers: {'Content-type': 'application/json'},
 
-            })
-            .then(response=>response.json())
-            .then(data=>console.log(data))
-            .then(this.props.renderWait())
-        this.setState({displayUpdate: false});
+                })
+                // .then(response=>response.json())
+                // .then(data=>console.log(data))
+            const data = await result.json();
+            console.log(data);
+            this.props.renderWait();
+            
+        } catch(error) {
+            console.log(error);
         }
+        this.setState({displayUpdate: false});
+    }
+        
     
     render() {
         let updateField;

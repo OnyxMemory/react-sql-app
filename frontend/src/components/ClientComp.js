@@ -11,12 +11,21 @@ class ClientComponent extends Component {
         this.search = ''
     }
 
-    renderClients = () => {
+    renderClients = async () => {
         if(this.search){
-            fetch(`http://127.0.0.1:5000/clientn/${this.search}`)
-            .then(response=>response.json())
-            .then(data=>this.setState({clientList: data}))
+            try {
+            const result = await fetch(`http://127.0.0.1:5000/clientn/${this.search}`)
+            const data = await result.json();
+            this.setState({clientList: data})
+            // .then(response=>response.json())
+            // .then(data=>this.setState({clientList: data}))
             //.then(console.log(this.state.clientList))
+            } catch(error) {
+                console.log(error);
+            }
+    
+        } else {
+            this.setState({clientList: []})
         }
         //.then(data=>this.setState({clientBox: data}))
     }
@@ -26,15 +35,15 @@ class ClientComponent extends Component {
         this.renderClients();
     }
 
-    renderWait = () => {
-        setTimeout(
-            ()=> {
-                this.renderClients()
-            }
-            ,
-            1
-        )
-    }
+    // renderWait = () => {
+    //     setTimeout(
+    //         ()=> {
+    //             this.renderClients()
+    //         }
+    //         ,
+    //         1000
+    //     )
+    // }
 
     render() {
 
@@ -45,7 +54,7 @@ class ClientComponent extends Component {
                 <br/>
                 <div className="Client Container">
                     {this.state.clientList.map((client,i)=> {
-                        return <Member key={i} id={client[0]} name={client[1]} onClick = {() => this.props.memberClick(client[0])} renderWait = {this.renderWait}/>
+                        return <Member key={i} id={client[0]} name={client[1]} onClick = {() => this.props.memberClick(client[0])} renderWait = {this.renderClients}/>
                     })}
                 </div>
             </div>
