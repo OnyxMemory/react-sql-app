@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Member from './ClientMemberComp';
 import './ClientComp.css'
+import '../utils/fetches'
+import { getClients } from '../utils/fetches';
 
 class ClientComponent extends Component {
     constructor() {
@@ -13,16 +15,13 @@ class ClientComponent extends Component {
 
     renderClients = async () => {
         if(this.search){
-            try {
-            const result = await fetch(`http://127.0.0.1:5000/clientn/${this.search}`)
-            const data = await result.json();
-            this.setState({clientList: data})
+            getClients(this.search).then(data => {
+                this.setState({clientList: data})
+            });
+            //this.setState({clientList: getClients(this.search)})
             // .then(response=>response.json())
             // .then(data=>this.setState({clientList: data}))
             //.then(console.log(this.state.clientList))
-            } catch(error) {
-                console.log(error);
-            }
     
         } else {
             this.setState({clientList: []})

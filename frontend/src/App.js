@@ -4,18 +4,20 @@ import './App.css';
 import ClientComp from './components/ClientComp'
 import InvoicesComp from './components/InvoicesComp'
 import InsertComp from './components/InsertComp'
+import {getInvoices} from './utils/fetches'
 
 class App extends Component {
 
   constructor() {
     super()
     this.state = {
-      invoicesId: null
+      invoices: []
     }
   }
 
   clientClick = (id) => {
-    this.setState({invoicesId: id})
+   getInvoices(id).then(data => this.setState({invoices: data}))
+    // this.setState({invoicesId: })
   }
 
   render() {
@@ -30,7 +32,7 @@ class App extends Component {
         <ClientComp memberClick={this.clientClick}/>
         </div>
         <div className='section'>
-        <InvoicesComp id={this.state.invoicesId}/>
+        <InvoicesComp invoices={this.state.invoices}/>
         </div>
         <div className='section'>
         <InsertComp/>

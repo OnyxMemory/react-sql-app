@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './ClientMemberComp.css';
 import updateState from '../utils/updateField'
+import '../utils/fetches'
+import { postClient, deleteClient } from '../utils/fetches';
 
 class ClientMemberComponent extends Component {
     constructor() {
@@ -15,44 +17,19 @@ class ClientMemberComponent extends Component {
         this.updateState(event);
     }
 
-    postClient = async () => {
+    postC = () => {
         if(this.state.newName){
-            try{
-             const result = await fetch(`http://127.0.0.1:5000/client/${this.props.id}`, {
-                method: 'put',
-                headers: {'Content-type': 'application/json'},
-                body: JSON.stringify({
-                    name: this.state.newName
-                })       
-            })
-            const data = await result.json();
-            console.log(data);
-            this.props.renderWait();
+            postClient(this.props.id,this.state.newName).then(this.props.renderWait());
+            
             // .then(response=>response.json())
             // .then(data=>console.log(data))
             // .then(this.props.renderWait());    
-            } catch(error) {
-                console.log(error);
-            }
         }
         this.setState({displayUpdate: false});
     }
-    deleteClient = async () => {
-        try{
-            const result = await fetch(`http://127.0.0.1:5000/client/${this.props.id}`, {
-                    method: 'delete',
-                    headers: {'Content-type': 'application/json'},
-
-                })
-                // .then(response=>response.json())
-                // .then(data=>console.log(data))
-            const data = await result.json();
-            console.log(data);
-            this.props.renderWait();
+    deleteC = () => {
+        deleteClient(this.props.id).then(this.props.renderWait());
             
-        } catch(error) {
-            console.log(error);
-        }
         this.setState({displayUpdate: false});
     }
         
@@ -63,8 +40,8 @@ class ClientMemberComponent extends Component {
             updateField = <div>
                 Name:<input name='newName'onChange={this.updateValue}/>
                 <br/>
-                <button onClick={this.postClient}>Save</button>
-                <button onClick={this.deleteClient}>Delete</button>
+                <button onClick={this.postC}>Save</button>
+                <button onClick={this.deleteC}>Delete</button>
             </div>;
         } else {
             updateField='';
