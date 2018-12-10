@@ -16,8 +16,7 @@ class App extends Component {
   }
 
   clientClick = (id) => {
-   getInvoices(id).then(data => this.setState({invoices: data}))
-    // this.setState({invoicesId: })
+    getInvoices(id).then(data => this.setState({invoices: data}))
   }
 
   render() {

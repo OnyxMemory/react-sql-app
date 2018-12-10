@@ -20,10 +20,6 @@ class ClientMemberComponent extends Component {
     postC = () => {
         if(this.state.newName){
             postClient(this.props.id,this.state.newName).then(this.props.renderWait());
-            
-            // .then(response=>response.json())
-            // .then(data=>console.log(data))
-            // .then(this.props.renderWait());    
         }
         this.setState({displayUpdate: false});
     }
