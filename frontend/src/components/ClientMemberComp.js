@@ -19,7 +19,10 @@ class ClientMemberComponent extends Component {
 
     postC = () => {
         if(this.state.newName){
-            postClient(this.props.id,this.state.newName).then(this.props.renderWait());
+            postClient(this.props.id,this.state.newName).then(setTimeout(() => {
+                
+                this.props.renderWait()
+            }), 1);
         }
         this.setState({displayUpdate: false});
     }

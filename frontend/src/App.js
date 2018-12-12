@@ -13,11 +13,19 @@ class App extends Component {
     this.state = {
       invoices: []
     }
+    this.cur_id = '';
   }
 
   clientClick = (id) => {
     getInvoices(id).then(data => this.setState({invoices: data}))
+    // this.cur_id = id;
+    // this.updateInvoices();
+
   }
+  updateInvoices = () => {
+    // getInvoices(this.cur_id).then(data => this.setState({invoices: data}))
+  }
+
 
   render() {
 
@@ -34,7 +42,7 @@ class App extends Component {
         <InvoicesComp invoices={this.state.invoices}/>
         </div>
         <div className='section'>
-        <InsertComp/>
+        <InsertComp update={this.updateInvoices}/>
         </div>
 
         </div>

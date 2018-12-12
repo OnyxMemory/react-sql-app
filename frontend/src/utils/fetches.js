@@ -1,5 +1,5 @@
 
-api_address = 'http://127.0.0.1:5000'
+var api_address = 'http://127.0.0.1:5000'
 
 async function getClients(condition){
     try {
@@ -48,4 +48,39 @@ async function deleteClient(id) {
     }
 }
 
-export {getClients, getInvoices, postClient, deleteClient}
+async function insertClient(name){
+    try{
+        const result = await fetch(`${api_address}/client/all`, {
+                method: 'post',
+                headers: {'Content-type': 'application/json'},
+                body: JSON.stringify({
+                    name: name,
+                })
+        })
+        return await result.json();
+    } catch(error) {
+        console.log(error);
+    }
+
+}
+
+async function insertInvoices(location, client_id, total){
+    try {
+        const result = await fetch(`${api_address}/inv/all`, {
+            method: 'post',
+            headers: {'Content-type': 'application/json'},
+            body: JSON.stringify({
+                date: new Date(),
+                location: location,
+                client_id: client_id,
+                total: total
+            })
+        })
+        return await result.json();
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
+export {getClients, getInvoices, postClient, deleteClient, insertClient, insertInvoices}

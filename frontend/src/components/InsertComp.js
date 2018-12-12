@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './InsertComp.css'
 import updateState from '../utils/updateField';
+import { insertClient, insertInvoices } from '../utils/fetches';
 
 class InsertComponent extends Component {
     constructor(){
@@ -18,40 +19,22 @@ class InsertComponent extends Component {
     createEntry = (event) => {
         if (event.target.name === 'client'){
             if(this.state.client_name){
-                fetch('http://localhost:5000/client/all', {
-                    method: 'post',
-                    headers: {'Content-type': 'application/json'},
-                    body: JSON.stringify({
-                        name: this.state.client_name,
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
+                insertClient(this.state.client_name).then(data => {
                     this.setState({msg:data,
-                                   client_name: ''})
+                        client_name: ''})
+                    //this.props.update();
                 })
             } else {
                 this.setState({msg:'Client Name is Invalid!'})
             }
         } else if (event.target.name === 'invoice'){
             if(this.state.client_id && this.state.location && this.state.total){
-                fetch('http://localhost:5000/inv/all', {
-                    method: 'post',
-                    headers: {'Content-type': 'application/json'},
-                    body: JSON.stringify({
-                        date: new Date(),
-                        location: this.state.location,
-                        client_id: this.state.client_id,
-                        total: this.state.total
-                    })
-
-                })
-                .then(response => response.json())
-                .then(data => {
+                insertInvoices(this.state.location,this.state.client_id,this.state.total).then(data => {
                     this.setState({msg:data,
-                                    location: '',
-                                    client_id: '',
-                                    total:''})
+                        location: '',
+                        client_id: '',
+                        total:''})
+                    //this.props.update();
                 })
             }else {
                 this.setState({msg:'Client_ID or Location is Invalid!'})
