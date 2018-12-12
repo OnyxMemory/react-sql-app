@@ -2,13 +2,20 @@ from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
 from data import Database
 from flask_cors import CORS
+import os
+
+DBNAME=os.getenv("DB_NAME")
+USER=os.getenv("DB_USER")
+PASSWORD=os.getenv("DB_PASSWORD")
+HOST=os.getenv("DB_HOST")
+PORT=os.getenv("DB_PORT")
 
 app=Flask(__name__)
 CORS(app)
 api = Api(app)
 
 
-db=Database('evolveu','evolveu','Password','localhost',5432)
+db=Database(DBNAME,USER,PASSWORD,HOST,PORT)
 
 
 class ClientRsrc(Resource):
