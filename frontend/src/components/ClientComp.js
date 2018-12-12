@@ -13,7 +13,7 @@ class ClientComponent extends Component {
         this.search = ''
     }
 
-    renderClients = () => {
+    renderClients = async () => {
         if(this.search){
             getClients(this.search).then(data => {
                 this.setState({clientList: data})

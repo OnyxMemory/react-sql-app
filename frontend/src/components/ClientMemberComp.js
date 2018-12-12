@@ -17,7 +17,7 @@ class ClientMemberComponent extends Component {
         this.updateState(event);
     }
 
-    postC = () => {
+    postC = async () => {
         if(this.state.newName){
             postClient(this.props.id,this.state.newName).then(setTimeout(() => {
                 
@@ -26,7 +26,7 @@ class ClientMemberComponent extends Component {
         }
         this.setState({displayUpdate: false});
     }
-    deleteC = () => {
+    deleteC = async () => {
         deleteClient(this.props.id).then(this.props.renderWait());
             
         this.setState({displayUpdate: false});
