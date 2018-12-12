@@ -19,16 +19,12 @@ class ClientMemberComponent extends Component {
 
     postC = async () => {
         if(this.state.newName){
-            postClient(this.props.id,this.state.newName).then(setTimeout(() => {
-                
-                this.props.renderWait()
-            }), 1);
+            postClient(this.props.id,this.state.newName).then(this.props.renderWait);
         }
         this.setState({displayUpdate: false});
     }
     deleteC = async () => {
-        deleteClient(this.props.id).then(this.props.renderWait());
-            
+        deleteClient(this.props.id).then(this.props.renderWait);
         this.setState({displayUpdate: false});
     }
         
@@ -48,7 +44,7 @@ class ClientMemberComponent extends Component {
 
         return (
             <div className = 'container-client'>
-            <div className = 'info' onClick={() => this.props.onClick()}>
+            <div className = 'info' onClick={this.props.onClick}>
                 Id: {this.props.id}
                 <br/>
                 Name: {this.props.name}
