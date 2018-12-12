@@ -7,16 +7,24 @@ class TestDatabase(unittest.TestCase):
 
 
     def test_database_connection(self):
-        db=self.create_tables()
+        self.delete_tables()
+        self.create_tables()
+        db=data.Database('evolveu','evolveu','Password','localhost',5432)
         self.assertIsInstance(db,data.Database)
-        self.delete_tables(db)
+        db.close_con()
+        self.delete_tables()
     def test_database_query(self):
-        db=self.create_tables()
+        self.delete_tables()
+        self.create_tables()
+        db=data.Database('evolveu','evolveu','Password','localhost',5432)
         result=db.select('tst_client','id=1')
         self.assertEqual(result,[(1,'Bob')])
-        self.delete_tables(db)
+        db.close_con()
+        self.delete_tables()
     def test_database_insert_delete(self):
-        db=self.create_tables()
+        self.delete_tables()
+        self.create_tables()
+        db=data.Database('evolveu','evolveu','Password','localhost',5432)
         db.insert('tst_client','name',('\'Jim\''))
         result=db.select('tst_client','name=\'Jim\'')
         self.assertEqual(result[0][1],'Jim')
@@ -27,22 +35,29 @@ class TestDatabase(unittest.TestCase):
         db.delete('tst_invoices','client_id=1')
         result=db.select('tst_invoices','client_id=1')
         self.assertEqual(result,[])
-        self.delete_tables(db)
+        db.close_con()
+        self.delete_tables()
     def test_database_join(self):
-        db=self.create_tables()
+        self.delete_tables()
+        self.create_tables()
+        db=data.Database('evolveu','evolveu','Password','localhost',5432)
         db.insert('tst_invoices',('date','location','client_id'),('2018-01-01','Calgary',1))
         result=db.join('tst_client','tst_invoices','id','client_id','one.id=1')
         self.assertEqual(result[0][0],1)
         self.assertEqual(result[0][1],'Bob')
         self.assertEqual(result[0][5],1)
         db.delete('tst_invoices','client_id=1')
-        self.delete_tables(db)
+        db.close_con()
+        self.delete_tables()
     def test_database_update(self):
-        db=self.create_tables()
+        db=data.Database('evolveu','evolveu','Password','localhost',5432)
+        self.delete_tables()
+        self.create_tables()
         db.update('tst_client','name','bob2','id=1')
         result = db.select('tst_client','id=1')
         self.assertEqual(result,[(1,'bob2')])
-        self.delete_tables(db)
+        db.close_con()
+        self.delete_tables()
         
 
     @staticmethod
@@ -56,27 +71,16 @@ class TestDatabase(unittest.TestCase):
         cur.execute('create table tst_invoices(id serial primary key unique, date timestamp with time zone, location text, client_id integer, total float)')
         db.conn.commit()
         cur.close()
-
-        return db
+        db.close_con()
+        # return db
     @staticmethod
-    def delete_tables(db):
+    def delete_tables():
+        db=data.Database('evolveu','evolveu','Password','localhost',5432)
         cur= db.conn.cursor()
-        cur.execute('drop table tst_client')
-        cur.execute('drop table tst_invoices')
+        cur.execute('drop table if exists tst_client')
+        db.conn.commit()
+        cur.execute('drop table if exists tst_invoices')
+        print('test3')
         db.conn.commit()
         cur.close()
         db.close_con()
-
-
-# class TestOop(unittest.TestCase):
-
-#     def test_class(self):
-#         emp1 = Employee('Test', 'User', 50000)
-#         self.assertIsInstance(emp1, Employee)
-#         self.assertEqual('Test', emp1.first)
-#         self.assertEqual('User', emp1.last)
-#         self.assertEqual(50000, emp1.pay)
-
-#     def test_fullname(self):r
-#         emp1 = Employee('Test', 'User', 50000)
-#         self.assertEqual('Test User', emp1.fullname())
